@@ -21,10 +21,10 @@ export default function HomeScreen() {
       <View className="flex-row items-center space-x-2">
         <Image
           source={require('~/assets/icons/healthhub.png')}
-          className="w-6 h-6"
+          className="w-8 h-8"
           resizeMode="contain"
         />
-        <Text variant="heading">HealthHub</Text>
+        <Text variant="title1">HealthHub</Text>
       </View>
 
       {/* Text */}
@@ -76,9 +76,8 @@ export default function HomeScreen() {
         </View>
       </View>
 
-      {/* Full Width Card */}
       <FullWidthCard
-        icon="shield-checkmark-outline"
+        icon="shield-outline"
         title="Your Data is Secured"
         subtitle="ABDM compliant encryption"
         showArrow={true}
