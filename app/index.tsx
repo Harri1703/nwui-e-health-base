@@ -24,14 +24,14 @@ export default function HomeScreen() {
           className="w-8 h-8"
           resizeMode="contain"
         />
-        <Text variant="title1">HealthHub</Text>
+        <Text variant="title2">HealthHub</Text>
       </View>
 
       {/* Text */}
-      <Text variant="title1" className="mt-2">
+      <Text variant="title2" className="mt-2">
         Your Personal Health Hub
       </Text>
-      <Text variant="title3" className="mt-4">
+      <Text variant="subhead" className="mt-4">
         Securely store your health records—forever ensuring complete privacy and confidentiality.
       </Text>
 
