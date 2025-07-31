@@ -1,153 +1,162 @@
-import { useHeaderHeight } from '@react-navigation/elements';
-import { LegendList } from '@legendapp/list';
-import { cssInterop } from 'nativewind';
-import * as React from 'react';
-import { Linking, useWindowDimensions, View, Alert } from 'react-native';
+import { ScrollView, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-
-import { Icon } from '@roninoss/icons';
-
 import { Text } from '~/components/nativewindui/Text';
+import { Button } from '~/components/nativewindui/Button';
+import { FeatureCard } from '~/components/General/FeatureCard';
+import { FullWidthCard } from '~/components/General/FullWidthCard';
+import { Avatar, AvatarImage, AvatarFallback } from '~/components/nativewindui/Avatar';
 
-import { useColorScheme } from '~/lib/useColorScheme';
-import { useHeaderSearchBar } from '~/lib/useHeaderSearchBar';
-
-cssInterop(LegendList, {
-  className: 'style',
-  contentContainerClassName: 'contentContainerStyle',
-});
-
-export default function Screen() {
-  const searchValue = useHeaderSearchBar({ hideWhenScrolling: COMPONENTS.length === 0 });
-
-  const data = searchValue
-    ? COMPONENTS.filter((c) => c.name.toLowerCase().includes(searchValue.toLowerCase()))
-    : COMPONENTS;
-
-  return (
-    <LegendList
-      contentInsetAdjustmentBehavior="automatic"
-      keyboardShouldPersistTaps="handled"
-      data={data}
-      estimatedItemSize={200}
-      contentContainerClassName="py-4 android:pb-12"
-      extraData={searchValue}
-      keyExtractor={keyExtractor}
-      ItemSeparatorComponent={renderItemSeparator}
-      renderItem={renderItem}
-      ListEmptyComponent={COMPONENTS.length === 0 ? ListEmptyComponent : undefined}
-      recycleItems
-    />
-  );
-}
-
-function ListEmptyComponent() {
+export default function HomeScreen() {
   const insets = useSafeAreaInsets();
-  const dimensions = useWindowDimensions();
-  const headerHeight = useHeaderHeight();
-  const { colors } = useColorScheme();
-  const height = dimensions.height - headerHeight - insets.bottom - insets.top;
 
   return (
-    <View style={{ height }} className="flex-1 items-center justify-center gap-1 px-12">
-      <Icon name="file-plus-outline" size={42} color={colors.grey} />
-      <Text variant="title3" className="pb-1 text-center font-semibold">
-        No Components Installed
-      </Text>
-      <Text color="tertiary" variant="subhead" className="pb-4 text-center">
-        You can install any of the free components from the{' '}
-        <Text
-          onPress={() => Linking.openURL('https://nativewindui.com')}
-          variant="subhead"
-          className="text-primary">
-          NativeWindUI
-        </Text>
-        {' website.'}
-      </Text>
-    </View>
-  );
-}
-
-type ComponentItem = { name: string; component: React.FC };
-
-function keyExtractor(item: ComponentItem) {
-  return item.name;
-}
-
-function renderItemSeparator() {
-  return <View className="p-2" />;
-}
-
-function renderItem({ item }: { item: ComponentItem }) {
-  return (
-    <Card title={item.name}>
-      <item.component />
-    </Card>
-  );
-}
-
-function Card({ children, title }: { children: React.ReactNode; title: string }) {
-  return (
-    <View className="px-4">
-      <View className="gap-4 rounded-xl border border-border bg-card p-4 pb-6 shadow-sm shadow-black/10 dark:shadow-none">
-        <Text className="text-center text-sm font-medium tracking-wider opacity-60">{title}</Text>
-        {children}
+    <ScrollView
+      className="px-4"
+      contentContainerStyle={{
+        paddingTop: insets.top,
+        paddingBottom: insets.bottom + 32,
+      }}
+    >
+      {/* Header */}
+      <View className="flex-row items-center space-x-2">
+        <Image
+          source={require('~/assets/icons/healthhub.png')}
+          className="w-6 h-6"
+          resizeMode="contain"
+        />
+        <Text variant="heading">HealthHub</Text>
       </View>
-    </View>
+
+      {/* Text */}
+      <Text variant="title1" className="mt-2">
+        Your Personal Health Hub
+      </Text>
+      <Text variant="title3" className="mt-4">
+        Securely store your health records—forever ensuring complete privacy and confidentiality.
+      </Text>
+
+      {/* Hero Image */}
+      <View className="mt-6">
+        <Image
+          source={require('~/assets/images/doctor_tablet.jpg')}
+          className="w-full h-72 rounded-xl"
+          resizeMode="cover"
+        />
+      </View>
+
+      {/* Feature Cards */}
+      <View className="mt-6 flex-row flex-wrap justify-between">
+        <View className="w-[48%] mb-4">
+          <FeatureCard
+            icon="document-text-outline"
+            title="Medical Records"
+            subtitle="Access your complete history"
+          />
+        </View>
+        <View className="w-[48%] mb-4">
+          <FeatureCard
+            icon="calendar-outline"
+            title="Appointments"
+            subtitle="Schedule with ease"
+          />
+        </View>
+        <View className="w-[48%] mb-4">
+          <FeatureCard
+            icon="videocam-outline"
+            title="Telemedicine"
+            subtitle="Virtual consultations"
+          />
+        </View>
+        <View className="w-[48%] mb-4">
+          <FeatureCard
+            icon="medkit-outline"
+            title="Lab Reports"
+            subtitle="Track your results"
+          />
+        </View>
+      </View>
+
+      {/* Full Width Card */}
+      <FullWidthCard
+        icon="shield-checkmark-outline"
+        title="Your Data is Secured"
+        subtitle="ABDM compliant encryption"
+        showArrow={true}
+        iconColor='#22c55e'
+      />
+
+      <Button variant="primary">
+        <Text variant="title2">Create Account</Text>
+      </Button>
+
+      <View className="flex-row items-center my-4">
+        <View className="flex-1 h-px bg-border" />
+        <Text variant="body">or</Text>
+        <View className="flex-1 h-px bg-border" />
+      </View>
+
+      <Button variant="secondary">
+        <Text variant="title2">Sign In</Text>
+      </Button>
+
+      <View className="mt-6">
+        <FullWidthCard
+          icon="people-outline"
+          title="Connect with Healthcare Providers"
+          subtitle="Direct access to your medical team"
+          showArrow={true}
+        />
+        <FullWidthCard
+          icon="time-outline"
+          title="Book Appointments Instantly"
+          subtitle="Save time with online scheduling"
+          showArrow={true}
+        />
+        <FullWidthCard
+          icon="business-outline"
+          title="Access Your Records Anytime"
+          subtitle="Your complete medical history in one place"
+          showArrow={true}
+        />
+        <FullWidthCard
+          icon="shield-checkmark-outline"
+          title="Trusted Security"
+          subtitle="End-to-end encryption"
+          showArrow={false}
+          iconColor="#22c55e"
+        />
+        <View className='justify-center items-center'>
+          <Text variant="body">Join thousands of users managing their health</Text>
+        </View>
+
+        <View className="flex-row justify-center">
+          <View className="flex-row"></View>
+            <View className="-ml-0">
+              <Avatar alt="Avatar of user AB">
+              <AvatarImage source={require('~/assets/avatars/user1.jpg')} />
+              <AvatarFallback><Text>AB</Text></AvatarFallback>
+              </Avatar>
+            </View>
+            <View className="-ml-4">
+              <Avatar alt="Avatar of user CD">
+              <AvatarImage source={require('~/assets/avatars/user2.jpg')} />
+              <AvatarFallback><Text>CD</Text></AvatarFallback>
+              </Avatar>
+            </View>
+            <View className="-ml-4">
+              <Avatar alt="Avatar of user EF">
+              <AvatarImage source={require('~/assets/avatars/user3.jpg')} />
+              <AvatarFallback><Text>EF</Text></AvatarFallback>
+              </Avatar>
+            </View>
+            <View className="-ml-4">
+              <Avatar alt="Avatar of user GH">
+              <AvatarImage source={require('~/assets/avatars/user4.jpg')} />
+              <AvatarFallback><Text>GH</Text></AvatarFallback>
+              </Avatar>
+            </View>
+          </View>
+      </View>
+    </ScrollView>
   );
 }
-
-const COMPONENTS: ComponentItem[] = [
-  {
-    name: 'Text',
-    component: function TextExample() {
-      return (
-        <View className="gap-2">
-          <Text variant="largeTitle" className="text-center">
-            Large Title
-          </Text>
-          <Text variant="title1" className="text-center">
-            Title 1
-          </Text>
-          <Text variant="title2" className="text-center">
-            Title 2
-          </Text>
-          <Text variant="title3" className="text-center">
-            Title 3
-          </Text>
-          <Text variant="heading" className="text-center">
-            Heading
-          </Text>
-          <Text variant="body" className="text-center">
-            Body
-          </Text>
-          <Text variant="callout" className="text-center">
-            Callout
-          </Text>
-          <Text variant="subhead" className="text-center">
-            Subhead
-          </Text>
-          <Text variant="footnote" className="text-center">
-            Footnote
-          </Text>
-          <Text variant="caption1" className="text-center">
-            Caption 1
-          </Text>
-          <Text variant="caption2" className="text-center">
-            Caption 2
-          </Text>
-        </View>
-      );
-    },
-  },
-  {
-    name: 'Selectable Text',
-    component: function SelectableTextExample() {
-      return (
-        <Text uiTextView selectable>
-          Long press or double press this text
-        </Text>
-      );
-    },
-  },
-];
