@@ -33,6 +33,7 @@ export default function RootLayout() {
         <NavThemeProvider value={NAV_THEME[colorScheme]}>
           <Stack screenOptions={SCREEN_OPTIONS}>
             <Stack.Screen name="index" options={{ headerShown: false }} />
+            <Stack.Screen name='CreateAccount' options={{ headerShown: false }} />
             {/* <Stack.Screen name="modal" options={MODAL_OPTIONS} /> */}
           </Stack>
         </NavThemeProvider>

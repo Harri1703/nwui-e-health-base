@@ -5,10 +5,11 @@ import { Button } from '~/components/nativewindui/Button';
 import { FeatureCard } from '~/components/General/FeatureCard';
 import { FullWidthCard } from '~/components/General/FullWidthCard';
 import { Avatar, AvatarImage, AvatarFallback } from '~/components/nativewindui/Avatar';
+import { useRouter } from 'expo-router';
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
-
+  const router = useRouter();
   return (
     <ScrollView
       className="px-4"
@@ -84,7 +85,7 @@ export default function HomeScreen() {
         iconColor='#22c55e'
       />
 
-      <Button variant="primary">
+      <Button variant="primary" onPress={() => router.push('/CreateAccount')}>
         <Text variant="title2">Create Account</Text>
       </Button>
 
