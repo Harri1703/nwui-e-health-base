@@ -2,11 +2,12 @@ import { Ionicons } from '@expo/vector-icons';
 import { View, TouchableOpacity } from 'react-native';
 import { Card, CardContent } from '../nativewindui/Card';
 import { Text } from '../nativewindui/Text';
+import clsx from 'clsx'; // Tailwind-style conditional classnames
 
 type FullWidthCardProps = {
   icon: keyof typeof Ionicons.glyphMap;
   title: string;
-  subtitle: string;
+  subtitle?: string;
   showArrow?: boolean;
   iconColor?: string;
   onPress?: () => void;
@@ -20,6 +21,8 @@ export function FullWidthCard({
   iconColor,
   onPress,
 }: FullWidthCardProps) {
+  const hasSubtitle = !!subtitle;
+
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -29,14 +32,21 @@ export function FullWidthCard({
       <Card>
         <CardContent className="flex-row items-center px-4 py-3 space-x-3">
           {/* Icon */}
-          <Ionicons name={icon} size={24} color={iconColor || "#2563eb"} className='mr-4'/>
+          <Ionicons name={icon} size={24} color={iconColor || "#2563eb"} className='mr-4' />
 
           {/* Title and subtitle */}
-          <View className="flex-1">
+          <View
+            className={clsx(
+              'flex-1',
+              !hasSubtitle
+            )}
+          >
             <Text variant="body">{title}</Text>
-            <Text variant="body" className="text-muted-foreground">
-              {subtitle}
-            </Text>
+            {hasSubtitle && (
+              <Text variant="body" className="text-muted-foreground">
+                {subtitle}
+              </Text>
+            )}
           </View>
 
           {/* Optional arrow */}

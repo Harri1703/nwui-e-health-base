@@ -95,7 +95,7 @@ export default function HomeScreen() {
         <View className="flex-1 h-px bg-border" />
       </View>
 
-      <Button variant="secondary">
+      <Button variant="secondary" onPress={() => router.push('/SignIn')}>
         <Text variant="title2">Sign In</Text>
       </Button>
 

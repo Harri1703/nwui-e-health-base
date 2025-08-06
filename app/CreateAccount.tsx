@@ -8,6 +8,7 @@ import { Picker } from '~/components/nativewindui/Picker';
 import { Checkbox } from '~/components/nativewindui/Checkbox';
 import { useColorScheme } from '~/lib/useColorScheme';
 import React from 'react';
+import { router } from 'expo-router';
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
@@ -90,7 +91,7 @@ export default function HomeScreen() {
             </Text>
         </View>
         <View className="mt-6">
-            <Button variant="primary">
+            <Button variant="primary" onPress={() => router.push('/Welcome')}>
                 <Text>Create Account</Text>
             </Button>
         </View>
@@ -100,20 +101,20 @@ export default function HomeScreen() {
             <View className="flex-1 h-px bg-border" />
         </View>
         <View className='mt-4'>
-            <Button variant="secondary">
+            <Button variant="secondary" onPress={() => router.push('/Welcome')}>
                 {GoogleIconImg}
                 <Text>Continue with Google</Text>
             </Button>
         </View>
         <View className='mt-4'>
-            <Button variant="secondary">
+            <Button variant="secondary" onPress={() => router.push('/Welcome')}>
                 {AppleIconImg}
                 <Text>Continue with Apple</Text>
             </Button>
         </View>
         <View className="mt-4">
             <Text variant="footnote" className="text-center">
-                Already have an account? <Text variant="footnote" className="text-primary">Sign In</Text>
+                Already have an account? <Text variant="footnote" className="text-primary" onPress={() => router.push('/SignIn')}>Sign In</Text>
             </Text>
         </View>
     </ScrollView>
