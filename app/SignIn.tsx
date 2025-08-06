@@ -61,9 +61,7 @@ export default function LoginScreen() {
       </View>
 
       <View className="mt-3 items-center">
-        <TouchableOpacity>
-          <Text variant="footnote" className="text-primary">Forgot Password?</Text>
-        </TouchableOpacity>
+        <Text variant="footnote" className="text-primary">Forgot Password?</Text>
       </View>
 
       <View className="flex-row items-center my-6">
@@ -89,7 +87,7 @@ export default function LoginScreen() {
       </View>
 
       <View className="mt-6 flex-row items-center justify-center">
-        <Text variant="footnote" className="ml-2">By continuing you agree to our <Text className="text-primary" variant="footnote">Privacy Policy</Text> and <Text className="text-primary" variant="footnote">Terms of Service</Text></Text>
+        <Text variant="footnote" className="ml-2 text-center">By continuing you agree to our <Text className="text-primary" variant="footnote">Privacy Policy</Text> and <Text className="text-primary" variant="footnote">Terms of Service</Text></Text>
       </View>
     </ScrollView>
   );

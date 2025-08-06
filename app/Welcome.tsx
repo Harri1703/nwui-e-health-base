@@ -1,17 +1,11 @@
-import { ScrollView, View, Image, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '~/components/nativewindui/Text';
 import { Button } from '~/components/nativewindui/Button';
-import { TextField } from '~/components/nativewindui/TextField';
-import { useColorScheme } from '~/lib/useColorScheme';
-import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { FullWidthCard } from '~/components/General/FullWidthCard';
 
 export default function WelcomeScreen() {
   const insets = useSafeAreaInsets();
-  const { colorScheme } = useColorScheme();
-  const ICON_SIZE = 24;
   const check_icon = require('~/assets/icons/check.png');
 
   return (
