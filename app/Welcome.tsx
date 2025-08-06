@@ -55,7 +55,7 @@ export default function WelcomeScreen() {
       <View className="mt-2">
         <FullWidthCard
             icon="person-outline"
-            title='Complete Your Profile'
+            title='Complete your profile'
             showArrow={true}
         />
       </View>
