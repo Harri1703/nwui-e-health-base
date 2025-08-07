@@ -55,7 +55,10 @@ export default function LoginScreen() {
       </View>
 
       <View className="mt-6">
-        <Button variant="primary">
+        <Button
+          variant="primary"
+          onPress={() => router.push('/(tabs)')}
+        >
           <Text>Sign In</Text>
         </Button>
       </View>
@@ -71,7 +74,7 @@ export default function LoginScreen() {
       </View>
 
       <View className="mt-2">
-        <Button variant="secondary">
+        <Button variant="secondary" onPress={() => router.push('/(tabs)')}>
           <Ionicons
             name="mail-outline"
             size={ICON_SIZE}

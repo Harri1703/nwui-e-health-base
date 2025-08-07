@@ -47,6 +47,7 @@ export default function RootLayout() {
 
 const SCREEN_OPTIONS = {
   animation: 'ios_from_right', // for android
+  headerShown: false,
 } as const;
 
 // const INDEX_OPTIONS = {

@@ -3,6 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '~/components/nativewindui/Text';
 import { Button } from '~/components/nativewindui/Button';
 import { FullWidthCard } from '~/components/General/FullWidthCard';
+import { router } from 'expo-router';
 
 export default function WelcomeScreen() {
   const insets = useSafeAreaInsets();
@@ -74,7 +75,7 @@ export default function WelcomeScreen() {
         />
       </View>
       <View className="mt-2">
-        <Button variant="primary">
+        <Button variant="primary" onPress={() => router.push('/(tabs)')}>
           <Text variant="title2">Get Started</Text>
         </Button>
       </View>
