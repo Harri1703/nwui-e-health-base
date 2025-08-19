@@ -1,5 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { Icon, IconProps } from '@roninoss/icons';
+import { Ionicons } from '@expo/vector-icons';
 import { Stack, Tabs } from 'expo-router';
 import * as React from 'react';
 import { Platform, Pressable, PressableProps, View } from 'react-native';
@@ -10,6 +10,9 @@ import { Badge } from '~/components/nativewindui/Badge';
 import { Text } from '~/components/nativewindui/Text';
 import { cn } from '~/lib/cn';
 import { useColorScheme } from '~/lib/useColorScheme';
+
+type IconProps = React.ComponentProps<typeof Ionicons>;
+const Icon = Ionicons;
 
 export default function TabLayout() {
   const { colors } = useColorScheme();
@@ -41,6 +44,24 @@ export default function TabLayout() {
             },
           }}
         />
+        <Tabs.Screen
+          name="Services"
+          options={{
+            title: 'Services',
+            tabBarIcon(props) {
+              return <Icon name="medkit" {...props} size={27} />;
+            },
+          }}
+        />
+        <Tabs.Screen
+          name="Profile"
+          options={{
+            title: 'Profile',
+            tabBarIcon(props) {
+              return <Icon name="person" {...props} size={27} />;
+            },
+          }}
+        />
       </Tabs>
     </>
   );
@@ -54,6 +75,8 @@ const TAB_BAR = Platform.select({
 const TAB_ICON = {
   index: 'home',      
   Records: 'folder',  
+  Services: 'medkit',
+  Profile: 'person',
 } as const;
 
 function MaterialTabBar({ state, descriptors, navigation }: BottomTabBarProps) {
@@ -133,7 +156,7 @@ function MaterialTabItem({
   ...pressableProps
 }: {
   isFocused: boolean;
-  name: IconProps<'material'>['name'];
+  name: IconProps['name'];
   label: string | React.ReactNode;
   badge?: number | string;
 } & Omit<PressableProps, 'children'>) {

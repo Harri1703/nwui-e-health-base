@@ -1,15 +1,13 @@
 import { ScrollView, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '~/components/nativewindui/Text';
-import { Button } from '~/components/nativewindui/Button';
 import { FeatureCard } from '~/components/General/FeatureCard';
-import { FullWidthCard } from '~/components/General/FullWidthCard';
 import { Avatar, AvatarImage, AvatarFallback } from '~/components/nativewindui/Avatar';
 import { useRouter } from 'expo-router';
 import { HealthSnapshotCard } from '~/components/Dashboard/HealthSnapshot';
 import { AppointmentCard } from '~/components/Dashboard/AppointmentCard';
 import { DailyHealthTipCard } from '~/components/Dashboard/DailyHealthTipCard';
-import { QuickActionCard } from '~/components/Dashboard/QuickActionCard';
+import { QuickActionCard } from '~/components/General/QuickActionCard';
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
@@ -27,7 +25,7 @@ export default function HomeScreen() {
                 <Text variant="title1" className="font-semibold">Welcome back, Sarah</Text>
                 <Text variant="body" className="text-muted-foreground">Your health dashboard</Text>
             </View>
-            <Avatar alt="Sarah's profile picture">
+            <Avatar alt="Sarah's profile picture"  className="w-16 h-16">
                 <AvatarImage source={require('~/assets/avatars/user1.jpg')} />
                 <AvatarFallback><Text>SR</Text></AvatarFallback>
             </Avatar>

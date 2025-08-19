@@ -12,7 +12,7 @@ export function QuickActionCard({ title, icon }: QuickActionCardProps) {
     <Card>
       <CardContent className="h-28 justify-center items-center">
         <CardTitle className="text-base flex items-center justify-center">
-          <Ionicons name={icon} size={27} />
+          <Ionicons name={icon} size={27} color="#2563eb"/>
         </CardTitle>
         <Text variant="body" className="text-center mt-2">{title}</Text>
       </CardContent>
