@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, useColorScheme } from 'react-native';
 import { Card, CardContent } from '../nativewindui/Card';
 import { Text } from '../nativewindui/Text';
 
@@ -9,7 +9,7 @@ type InfoCardProps = {
   subtitle?: string;          // Below title
   bottomLeft?: string;        // Bottom left label
   bottomRight?: string;       // Bottom right value
-  bottomRightColor?: string;  // Color for bottom right
+  bottomRightColor?: string;  // Color for bottom right (overrides theme)
   showArrow?: boolean;
   iconColor?: string;
   onPress?: () => void;
@@ -21,17 +21,20 @@ export function InfoCard({
   subtitle,
   bottomLeft,
   bottomRight,
-  bottomRightColor = "#000",
+  bottomRightColor,
   showArrow = false,
   iconColor,
   onPress,
 }: InfoCardProps) {
+  const scheme = useColorScheme();
+  const isDark = scheme === 'dark';
+
+  // If a color is provided, use it; otherwise pick based on theme.
+  const resolvedBottomRightColor =
+    bottomRightColor ?? (isDark ? '#ffffff' : '#000000');
+
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      activeOpacity={0.9}
-      className="w-full mb-4"
-    >
+    <TouchableOpacity onPress={onPress} activeOpacity={0.9} className="w-full mb-4">
       <Card>
         <CardContent className="px-4 py-3">
           {/* Top row: icon + title + optional arrow */}
@@ -40,7 +43,7 @@ export function InfoCard({
               <Ionicons
                 name={icon}
                 size={22}
-                color={iconColor || "#2563eb"}
+                color={iconColor || '#2563eb'}
                 style={{ marginRight: 10 }}
               />
               <View>
@@ -55,13 +58,7 @@ export function InfoCard({
               </View>
             </View>
 
-            {showArrow && (
-              <Ionicons
-                name="chevron-forward"
-                size={20}
-                color="#9ca3af"
-              />
-            )}
+            {showArrow && <Ionicons name="chevron-forward" size={20} color="#9ca3af" />}
           </View>
 
           {/* Bottom row: left + right */}
@@ -71,7 +68,7 @@ export function InfoCard({
                 {bottomLeft}
               </Text>
               {bottomRight && (
-                <Text variant="body" style={{ color: bottomRightColor }}>
+                <Text variant="body" style={{ color: resolvedBottomRightColor }}>
                   {bottomRight}
                 </Text>
               )}

@@ -37,6 +37,12 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.harri1703.myexpoapp"
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "acede0ec-a53a-46bb-abf7-d1c690371e7e"
+      }
     }
   }
 }

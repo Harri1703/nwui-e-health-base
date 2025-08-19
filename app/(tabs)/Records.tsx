@@ -34,7 +34,7 @@ type StoredRecord = {
   title: string;
   doctor: string;
   hospital: string;
-  date: string;
+  date: string; // stored as toLocaleDateString()
   fileUri: string;
   fileName: string;
   mimeType?: string | null;
@@ -186,7 +186,7 @@ export default function MedicalRecordsScreen() {
       title: form.documentName || 'Untitled Record',
       doctor: form.doctor || '—',
       hospital: form.hospital || '—',
-      date: new Date().toLocaleDateString(),
+      date: new Date().toLocaleDateString(), // display date
       fileUri: form.file.uri,
       fileName: form.file.name,
       mimeType: form.file.mimeType ?? null,
@@ -402,10 +402,54 @@ export default function MedicalRecordsScreen() {
     }
   }
 
+  // ---------- Filtering & Grouping ----------
   const filtered = useMemo(
     () => records.filter((r) => selected === 'All Records' || r.type === selected),
     [records, selected]
   );
+
+  // Robust-ish date parse for our display-stored dates
+  function parseDateSafe(dateStr: string) {
+    // Try native
+    const d = new Date(dateStr);
+    if (!isNaN(d.getTime())) return d;
+    // Fallback for dd/mm/yyyy or mm/dd/yyyy
+    const parts = dateStr.split(/[\/\-\.]/).map((x) => parseInt(x, 10));
+    if (parts.length === 3) {
+      const [a, b, c] = parts;
+      // Guess mm/dd/yyyy first, then dd/mm/yyyy
+      let guess = new Date(c, a - 1, b);
+      if (isNaN(guess.getTime())) guess = new Date(c, b - 1, a);
+      if (!isNaN(guess.getTime())) return guess;
+    }
+    return new Date(); // fallback to now
+  }
+
+  function monthKey(d: Date) {
+    return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  }
+
+  const groupedByMonth = useMemo(() => {
+    const bucket: Record<string, { ts: number; items: StoredRecord[] }> = {};
+    for (const rec of filtered) {
+      const d = parseDateSafe(rec.date);
+      const key = monthKey(d);
+      if (!bucket[key]) {
+        // ts = first day of that month for sorting
+        const monthStart = new Date(d.getFullYear(), d.getMonth(), 1).getTime();
+        bucket[key] = { ts: monthStart, items: [] };
+      }
+      bucket[key].items.push(rec);
+    }
+    // Sort each month's items by date desc (optional)
+    for (const k of Object.keys(bucket)) {
+      bucket[k].items.sort(
+        (a, b) => parseDateSafe(b.date).getTime() - parseDateSafe(a.date).getTime()
+      );
+    }
+    // Return entries sorted by month desc (Aug above July, etc.)
+    return Object.entries(bucket).sort(([, A], [, B]) => B.ts - A.ts);
+  }, [filtered]);
 
   return (
     <View className="flex-1 bg-white dark:bg-neutral-950">
@@ -421,44 +465,52 @@ export default function MedicalRecordsScreen() {
           <View className="flex-row px-1">
             {categories.map((category, idx) => {
               const categoryColors: Record<string, string> = {
-          'All Records': 'bg-yellow-400',
-          Prescription: 'bg-blue-600',
-          'Lab Report': 'bg-green-600',
-          Scan: 'bg-purple-600',
-          Discharge: 'bg-orange-600',
+                'All Records': 'bg-yellow-400',
+                Prescription: 'bg-blue-600',
+                'Lab Report': 'bg-green-600',
+                Scan: 'bg-purple-600',
+                Discharge: 'bg-orange-600',
               };
               const isSelected = selected === category;
               const bgColor = isSelected
-          ? categoryColors[category] || 'bg-blue-600'
-          : 'bg-gray-100 dark:bg-neutral-800';
+                ? categoryColors[category] || 'bg-blue-600'
+                : 'bg-gray-100 dark:bg-neutral-800';
               const textColor = isSelected ? 'text-white' : 'text-gray-700 dark:text-gray-300';
 
               return (
-          <Text
-            key={category}
-            onPress={() => setSelected(category as any)}
-            className={`px-4 py-2 rounded-full text-sm font-medium ${bgColor} ${textColor} ${idx !== 0 ? 'ml-3' : ''}`}
-          >
-            {category}
-          </Text>
+                <Text
+                  key={category}
+                  onPress={() => setSelected(category as any)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium ${bgColor} ${textColor} ${idx !== 0 ? 'ml-3' : ''}`}
+                >
+                  {category}
+                </Text>
               );
             })}
           </View>
         </ScrollView>
 
-        {/* Records */}
-        {filtered.map((record) => (
-          <View className="mb-4" key={record.id}>
-            <MedicalRecordCard
-              type={record.type}
-              title={record.title}
-              doctor={record.doctor}
-              hospital={record.hospital}
-              date={record.date}
-              onView={() => handleView(record)}
-              onDownload={() => handleDownload(record)}
-              onShare={() => handleShare(record)}
-            />
+        {/* Records grouped by month */}
+        {groupedByMonth.map(([month, recs]) => (
+          <View key={month} className="mb-8">
+            <Text className="text-base font-semibold text-gray-800 dark:text-gray-200 mb-3">
+              {month}
+            </Text>
+
+            {recs.items.map((record) => (
+              <View className="mb-4" key={record.id}>
+                <MedicalRecordCard
+                  type={record.type}
+                  title={record.title}
+                  doctor={record.doctor}
+                  hospital={record.hospital}
+                  date={record.date}
+                  onView={() => handleView(record)}
+                  onDownload={() => handleDownload(record)}
+                  onShare={() => handleShare(record)}
+                />
+              </View>
+            ))}
           </View>
         ))}
 
